@@ -1,0 +1,28 @@
+^H:\REPOS\TUTORIAL_VULKAN\TUTORIAL_SPLIT\09_SHADER_MODULES\TEMP1\BUILD\CMAKEFILES\1E3153CD967CA1064DA7CB246CD21F3F\FRAG.SPV.RULE
+setlocal
+C:\VulkanSDK\1.3.250.1\Bin\glslc.exe -o H:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP1/build/shader/frag.spv H:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP1/09_shader_base.frag
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^H:\REPOS\TUTORIAL_VULKAN\TUTORIAL_SPLIT\09_SHADER_MODULES\TEMP1\BUILD\CMAKEFILES\7DEC25D9C6AE8C98B693687CD0C8E8FA\GENERATE_CONFIG_FILE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^H:\REPOS\TUTORIAL_VULKAN\TUTORIAL_SPLIT\09_SHADER_MODULES\TEMP1\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SH:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP1 -BH:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP1/build --check-stamp-file H:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

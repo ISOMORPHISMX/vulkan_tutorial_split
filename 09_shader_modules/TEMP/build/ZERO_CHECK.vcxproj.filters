@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="H:\repos\tutorial_Vulkan\tutorial_split\09_shader_modules\TEMP\build\CMakeFiles\17b737c62f0665f76f49c2aeeb385440\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{D58BA19F-895F-3B3C-8B71-8A96CA9B0EDD}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

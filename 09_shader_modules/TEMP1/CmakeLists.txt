@@ -1,0 +1,42 @@
+cmake_minimum_required(VERSION 3.20)
+project(MyProject)
+
+
+# ... (查找 glslc 编译器) ...
+find_program(GLSLC_COMPILER glslc)
+
+# ... (创建 build/shader 文件夹) ...
+file(MAKE_DIRECTORY build/shader)
+
+# 设置配置文件的生成路径
+set(CONFIG_FILE ${CMAKE_CURRENT_SOURCE_DIR}/build/shader/frag.spv)
+
+#设置shader文件路径
+set(SHADER_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/09_shader_base.frag
+    ${CMAKE_CURRENT_SOURCE_DIR}/09_shader_base.vert
+)
+
+
+
+
+foreach(INDEX RANGE 1)
+    list(GET SHADER_FILES ${INDEX} SHADER_FILE )
+    message("SHADER_FILE : ${SHADER_FILE}")
+endforeach()
+
+# 定义自定义命令来生成配置文件
+message("SHADER_FILES : ${SHADER_FILES}")
+
+    add_custom_command(
+        OUTPUT ${CONFIG_FILE}
+        COMMAND ${GLSLC_COMPILER} -o ${CONFIG_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/09_shader_base.frag
+        COMMENT "Generating config file ${CONFIG_FILE}"
+    )
+
+# 声明一个虚拟目标，将自定义命令作为依赖项
+add_custom_target(generate_config_file DEPENDS ${CONFIG_FILE})
+
+# 添加一个示例的可执行文件，并将生成配置文件作为依赖项
+add_executable(my_executable main.cpp)
+add_dependencies(my_executable generate_config_file)

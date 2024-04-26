@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <ProjectOutputs>
+    <ProjectOutput>
+      <FullPath>H:\repos\tutorial_Vulkan\tutorial_split\09_shader_modules\TEMP\build\x64\Debug\ZERO_CHECK</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>H:\repos\tutorial_Vulkan\tutorial_split\09_shader_modules\TEMP\build\x64\Debug\compile_shaders</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>H:\repos\tutorial_Vulkan\tutorial_split\09_shader_modules\TEMP\build\Debug\temp_exe.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
+      <FullPath>H:\repos\tutorial_Vulkan\tutorial_split\09_shader_modules\TEMP\build\x64\Debug\ALL_BUILD</FullPath>
+    </ProjectOutput>
+  </ProjectOutputs>
+  <ContentFiles />
+  <SatelliteDlls />
+  <NonRecipeFileRefs />
+</Project>

@@ -1,0 +1,4 @@
+H:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP1/build/CMakeFiles/generate_config_file.dir
+H:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP1/build/CMakeFiles/my_executable.dir
+H:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP1/build/CMakeFiles/ALL_BUILD.dir
+H:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP1/build/CMakeFiles/ZERO_CHECK.dir

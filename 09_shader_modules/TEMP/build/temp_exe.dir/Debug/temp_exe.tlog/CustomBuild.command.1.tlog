@@ -1,0 +1,10 @@
+^H:\REPOS\TUTORIAL_VULKAN\TUTORIAL_SPLIT\09_SHADER_MODULES\TEMP\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SH:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP -BH:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP/build --check-stamp-file H:/repos/tutorial_Vulkan/tutorial_split/09_shader_modules/TEMP/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

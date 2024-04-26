@@ -1,0 +1,36 @@
+cmake_minimum_required(VERSION 3.12)
+
+project(MyProject)
+
+# 定义源文件列表和输出文件列表
+set(SHADER_SOURCES shader1.glsl shader2.glsl)
+set(OUT_SHADER_NAMES shader1.spv shader2.spv)
+
+# 为每个源文件生成 SPIR-V 文件
+foreach(SHADER INDEX IN LISTS SHADER_SOURCES)
+    get_filename_component(SHADER_NAME ${SHADER} NAME_WE)
+    list(GET OUT_SHADER_NAMES ${INDEX} OUT_SHADER_NAME)
+    list(APPEND SPIRV_OUTPUTS ${CMAKE_CURRENT_BINARY_DIR}/${OUT_SHADER_NAME})
+
+    add_custom_command(
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${OUT_SHADER_NAME}
+        COMMAND glslc ${SHADER} -o ${CMAKE_CURRENT_BINARY_DIR}/${OUT_SHADER_NAME}
+        DEPENDS ${SHADER}
+        COMMENT "Compiling ${SHADER} to SPIR-V"
+    )
+endforeach()
+
+# 添加自定义目标，以便在编译时生成 SPIR-V 文件
+add_custom_target(GenerateSPIRV DEPENDS ${SPIRV_OUTPUTS})
+
+# 将自定义目标添加到构建过程中
+add_dependencies(MyProject GenerateSPIRV)
+
+# 将生成的 SPIR-V 文件添加到输出
+set(OUT_SHADER_PATHS "")
+foreach(SPIRV ${SPIRV_OUTPUTS})
+    list(APPEND OUT_SHADER_PATHS ${SPIRV})
+endforeach()
+
+# 输出生成的 SPIR-V 文件列表
+message("Generated SPIR-V files: ${OUT_SHADER_PATHS}")

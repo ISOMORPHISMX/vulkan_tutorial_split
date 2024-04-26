@@ -1,0 +1,95 @@
+cmake_minimum_required (VERSION 3.10)
+project (VulkanTutorial)
+
+# 添加包含目录
+set( MY_INCLUDE_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../include )
+
+# 添加库文件目录
+#link_directories( ${MY_INCLUDE_DIRECTORY}/glfw/lib )
+
+# 寻找 Vulkan 头文件和库文件
+find_package(Vulkan REQUIRED)
+
+
+# 寻找 GLFW 头文件和库文件
+set(GLFW_DIR ${MY_INCLUDE_DIRECTORY}/glfw)
+include_directories(${GLFW_DIR})
+set(GLFW_LIB ${GLFW_DIR}/lib)
+
+# 寻找 glm 头文件
+set(GLM_DIR ${MY_INCLUDE_DIRECTORY}/glm)
+include_directories(${GLM_DIR})
+
+
+# 寻找 tinyobjloader 头文件
+set(TOL_DIR ${MY_INCLUDE_DIRECTORY}/tinyobjloader)
+include_directories(${TOL_DIR})
+
+# 寻找 stb_image 头文件
+set(STB_DIR ${MY_INCLUDE_DIRECTORY}/stb)
+include_directories(${STB_DIR})
+
+
+# 定义编译 shader 的函数
+function(add_shaders_target TARGET)
+  cmake_parse_arguments(SHADER "" "CHAPTER_NAME" "SOURCES" ${ARGN})
+  set(SHADERS_DIR ${SHADER_CHAPTER_NAME}/shaders)
+  add_custom_command(
+    OUTPUT ${SHADERS_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory ${SHADERS_DIR}
+    )
+  set(SHADERS ${SHADERS_DIR}/frag.spv ${SHADERS_DIR}/vert.spv)
+  # Some chapters may have compute shaders in addition to vertex and fragment shaders,
+  # so we conditionally check this and add them to the target
+  string(FIND "${SHADER_SOURCES}" "${CHAPTER_SHADER}.comp" COMPUTE_SHADER_INDEX)
+  if (${COMPUTE_SHADER_INDEX} GREATER -1)  
+    set(SHADERS ${SHADERS} ${SHADERS_DIR}/comp.spv)
+  endif()
+  # 修改这里，去掉 glslang::validator，直接使用 vulkan-glslc 工具编译着色器
+  add_custom_command(
+    OUTPUT ${SHADERS}
+    # 使用 vulkan-glslc 工具编译着色器
+    COMMAND vulkan-glslc ARGS -o ${SHADERS_DIR}/frag.spv ${SHADERS_DIR}/frag.glsl
+    COMMAND vulkan-glslc ARGS -o ${SHADERS_DIR}/vert.spv ${SHADERS_DIR}/vert.glsl
+    COMMAND vulkan-glslc ARGS -o ${SHADERS_DIR}/comp.spv ${SHADERS_DIR}/comp.glsl
+    WORKING_DIRECTORY ${SHADERS_DIR}
+    DEPENDS ${SHADERS_DIR} ${SHADER_SOURCES}
+    COMMENT "Compiling Shaders"
+    VERBATIM
+    )
+  add_custom_target(${TARGET} DEPENDS ${SHADERS})
+endfunction()
+
+# 定义添加章节的函数
+function(add_chapter CHAPTER_NAME)
+  cmake_parse_arguments(CHAPTER "" "SHADER" "LIBS;TEXTURES;MODELS" ${ARGN})
+
+  add_executable(${CHAPTER_NAME} ${CHAPTER_NAME}.cpp)
+  set_target_properties(${CHAPTER_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CHAPTER_NAME})
+  set_target_properties(${CHAPTER_NAME} PROPERTIES CXX_STANDARD 17)
+  target_link_libraries(${CHAPTER_NAME} Vulkan::Vulkan glfw3)
+  target_link_directories(${CHAPTER_NAME} PRIVATE ${GLFW_LIB})
+  target_include_directories(${CHAPTER_NAME} PRIVATE ${STB_DIR} ${GLM_DIR} ${TOL_DIR})
+
+  if (DEFINED CHAPTER_SHADER)
+    set(CHAPTER_SHADER_TARGET ${CHAPTER_NAME}_shader)
+    file(GLOB SHADER_SOURCES ${CHAPTER_SHADER}.frag ${CHAPTER_SHADER}.vert ${CHAPTER_SHADER}.comp)
+    add_shaders_target(${CHAPTER_SHADER_TARGET} CHAPTER_NAME ${CHAPTER_NAME} SOURCES ${SHADER_SOURCES})
+    add_dependencies(${CHAPTER_NAME} ${CHAPTER_SHADER_TARGET})
+  endif ()
+  if (DEFINED CHAPTER_LIBS)
+    target_link_libraries(${CHAPTER_NAME} ${CHAPTER_LIBS})
+  endif ()
+  if (DEFINED CHAPTER_MODELS)
+    file(COPY ${CHAPTER_MODELS} DESTINATION ${CMAKE_BINARY_DIR}/${CHAPTER_NAME}/models)
+  endif ()
+  if (DEFINED CHAPTER_TEXTURES)
+    file(COPY ${CHAPTER_TEXTURES} DESTINATION ${CMAKE_BINARY_DIR}/${CHAPTER_NAME}/textures)
+  endif ()
+endfunction()
+
+# 添加各章节
+#add_chapter(00_base_code)
+#add_chapter(01_instance_creation)
+# 添加更多章节...
+add_chapter(07_image_views)
